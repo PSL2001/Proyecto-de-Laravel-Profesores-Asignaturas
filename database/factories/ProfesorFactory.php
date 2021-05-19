@@ -22,7 +22,10 @@ class ProfesorFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nombre'=>$this->faker->firstName(),
+            'apellidos'=>$this->faker->lastName()." ".$this->faker->lastName(),
+            'email'=>$this->faker->unique()->freeEmail,
+            'localidad'=>$this->faker->city()
         ];
     }
 }
