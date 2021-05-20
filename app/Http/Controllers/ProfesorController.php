@@ -14,7 +14,8 @@ class ProfesorController extends Controller
      */
     public function index()
     {
-        //
+        $profesores = Profesor::orderBy('nombre')->orderBy('localidad')->paginate(5);
+        return view('profesores.index', compact('profesores'));
     }
 
     /**
@@ -24,7 +25,7 @@ class ProfesorController extends Controller
      */
     public function create()
     {
-        //
+        return view('profesores.create');
     }
 
     /**
@@ -35,7 +36,20 @@ class ProfesorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //1.- Validamos
+        $request->validate([
+            'nombre' => ['required', 'string', 'min:3', 'max:50'],
+            'apellidos' => ['required', 'string', 'min:3', 'max:50'],
+            'localidad' => ['required', 'string', 'min:3', 'max:90'],
+            'email' => ['required', 'string', 'min:5', 'max:60', 'unique:profesors,email']
+        ]);
+        //2.- Procesar
+        try {
+            Profesor::create($request->all());
+        } catch (\Exception $ex) {
+            return redirect()->route('profesores.index')->with("mensaje", "Error con la BBDD");
+        }
+        return redirect()->route('profesores.index')->with("mensaje", "Profesor creado");
     }
 
     /**
@@ -44,9 +58,9 @@ class ProfesorController extends Controller
      * @param  \App\Models\Profesor  $profesor
      * @return \Illuminate\Http\Response
      */
-    public function show(Profesor $profesor)
+    public function show(Profesor $profesore)
     {
-        //
+        return view('profesores.show', compact('profesore'));
     }
 
     /**
@@ -55,9 +69,9 @@ class ProfesorController extends Controller
      * @param  \App\Models\Profesor  $profesor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Profesor $profesor)
+    public function edit(Profesor $profesore)
     {
-        //
+        return view('profesores.edit', compact('profesore'));
     }
 
     /**
@@ -67,9 +81,22 @@ class ProfesorController extends Controller
      * @param  \App\Models\Profesor  $profesor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Profesor $profesor)
+    public function update(Request $request, Profesor $profesore)
     {
-        //
+        //1.- Validamos
+        $request->validate([
+            'nombre' => ['required', 'string', 'min:3', 'max:50'],
+            'apellidos' => ['required', 'string', 'min:3', 'max:50'],
+            'localidad' => ['required', 'string', 'min:3', 'max:90'],
+            'email' => ['required', 'string', 'min:5', 'max:60', 'unique:profesors,email,'.$profesore->id]
+        ]);
+        //2.- Procesar
+        try {
+            $profesore->update($request->all());
+        } catch (\Exception $ex) {
+            return redirect()->route('profesores.index')->with("mensaje", "Error con la BBDD");
+        }
+        return redirect()->route('profesores.index')->with("mensaje", "Profesor editado");
     }
 
     /**
@@ -78,8 +105,13 @@ class ProfesorController extends Controller
      * @param  \App\Models\Profesor  $profesor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Profesor $profesor)
+    public function destroy(Profesor $profesore)
     {
-        //
+        try {
+            $profesore->delete();
+        } catch (\Exception $ex) {
+            return redirect()->route('profesores.index')->with("mensaje", "Error con la BBDD");
+        }
+        return redirect()->route('profesores.index')->with("mensaje", "Profesor Borrado");
     }
 }
