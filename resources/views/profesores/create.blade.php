@@ -2,7 +2,7 @@
     <x-slot name="titulo">Creacion</x-slot>
     <x-slot name="cabecera">Creando profesor</x-slot>
     <x-errores />
-    <form name="sd" method="POST" action="{{route('profesores.store')}}" class=" p-4 bg-secondary text-light">
+    <form name="sd" method="POST" action="{{route('profesores.store')}}" class="p-4 bg-dark text-light">
         @csrf
         <x-form-input name="nombre" label="Nombre Profesor" />
         <x-form-input name="apellidos" label="Apellidos Profesor" />

@@ -2,7 +2,7 @@
     <x-slot name="titulo">Creacion</x-slot>
     <x-slot name="cabecera">Editando profesor</x-slot>
     <x-errores />
-    <form name="sd" method="POST" action="{{route('profesores.update', $profesore)}}" class=" p-4 bg-secondary text-light">
+    <form name="sd" method="POST" action="{{route('profesores.update', $profesore)}}" class=" p-4 bg-dark text-light">
         @csrf
         @method("PUT")
         @bind($profesore)

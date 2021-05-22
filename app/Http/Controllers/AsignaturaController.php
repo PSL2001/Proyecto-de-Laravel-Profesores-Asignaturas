@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Asignatura;
+use App\Models\Profesor;
 use Illuminate\Http\Request;
 
 class AsignaturaController extends Controller
@@ -25,7 +26,8 @@ class AsignaturaController extends Controller
      */
     public function create()
     {
-        //
+        $misProfesores = Profesor::getArrayIdNombre();
+        return view('asignaturas.create', compact('misProfesores'));
     }
 
     /**
@@ -36,7 +38,20 @@ class AsignaturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre'=>['required', 'string', 'min:4', 'max:20'],
+            'descripcion'=>['required', 'string', 'min:8', 'max:50'],
+            'creditos'=>['required', 'integer', 'min:1', 'max:200'],
+            'profesor_id'=>['required']
+
+        ]);
+        //2.- procesamos para hacer el insert
+        try{
+            Asignatura::create($request->all());
+        }catch(\Exception $ex){
+            return redirect()->route('asignaturas.index')->with("mensaje", "Error !!!". $ex->getMessage());
+        }
+        return redirect()->route('asignaturas.index')->with("mensaje", "Asignatura Guardada");
     }
 
     /**
@@ -47,7 +62,7 @@ class AsignaturaController extends Controller
      */
     public function show(Asignatura $asignatura)
     {
-        //
+        return view('asignaturas.show', compact('asignatura'));
     }
 
     /**
@@ -58,7 +73,8 @@ class AsignaturaController extends Controller
      */
     public function edit(Asignatura $asignatura)
     {
-        //
+        $misProfesores = Profesor::getArrayIdNombre();
+        return view('asignaturas.edit', compact('asignatura', 'misProfesores'));
     }
 
     /**
@@ -70,7 +86,20 @@ class AsignaturaController extends Controller
      */
     public function update(Request $request, Asignatura $asignatura)
     {
-        //
+        $request->validate([
+            'nombre'=>['required', 'string', 'min:4', 'max:20'],
+            'descripcion'=>['required', 'string', 'min:8', 'max:50'],
+            'creditos'=>['required', 'integer', 'min:1', 'max:200'],
+            'profesor_id'=>['required']
+
+        ]);
+        //2.- procesamos para hacer el insert
+        try{
+            $asignatura->update($request->all());
+        }catch(\Exception $ex){
+            return redirect()->route('asignaturas.index')->with("mensaje", "Error !!!". $ex->getMessage());
+        }
+        return redirect()->route('asignaturas.index')->with("mensaje", "Asignatura Actualizada");
     }
 
     /**
@@ -81,6 +110,11 @@ class AsignaturaController extends Controller
      */
     public function destroy(Asignatura $asignatura)
     {
-        //
+        try {
+            $asignatura->delete();
+        } catch (\Exception $ex) {
+            return redirect()->route('asignaturas.index')->with("mensaje", "Error con la BBDD");
+        }
+        return redirect()->route('asignaturas.index')->with("mensaje", "Asignatura eliminada");
     }
 }

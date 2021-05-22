@@ -14,4 +14,14 @@ class Profesor extends Model
     {
         return $this->hasMany(Asignatura::class);
     }
+
+    //Coge en un array el id y el nombre de profesor
+    public static function getArrayIdNombre(){
+        $profesores=Profesor::orderBy('nombre')->get();
+        $miArray=[];
+        foreach($profesores as $item){
+            $miArray[$item->id]=$item->nombre;
+        }
+        return $miArray;
+    }
 }

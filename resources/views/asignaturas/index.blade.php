@@ -3,7 +3,7 @@
     <x-slot name="cabecera">Gestión de Asignaturas</x-slot>
     <x-mensajes />
     <a href="{{route('asignaturas.create')}}" class="btn btn-success"><i class="fas fa-plus"></i> Crear Asignatura</a>
-    <table class="table table-success table-striped mt-2">
+    <table class="table table-dark table-hover table-striped mt-2">
         <thead>
           <tr>
             <th scope="col">Detalle</th>

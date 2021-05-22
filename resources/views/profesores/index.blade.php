@@ -1,6 +1,6 @@
 <x-plantilla>
     <x-slot name="titulo">Gestion</x-slot>
-    <x-slot name="cabecera">Gestión de Tiendas del Sur</x-slot>
+    <x-slot name="cabecera">Gestión de Profesores</x-slot>
     <x-mensajes />
     <a href="{{route('profesores.create')}}" class="btn btn-success"><i class="fas fa-plus"></i> Crear Profesor</a>
     <table class="table table-dark table-hover table-striped mt-2">
